@@ -23,11 +23,19 @@ controls.target.set(0, 0, 0);
 controls.update();
 
 
-camera.position.z = 15;
+camera.position.z = 40;
+
+let escalar = 0.1;
+let angulo_z = 40;
+let angulo_xy = 90;
+
+angulo_z *= Math.PI / 180;
+angulo_xy *= Math.PI / 180;
+
+let direcao = new THREE.Vector3(Math.sin(angulo_z) * Math.cos(angulo_xy), Math.sin(angulo_z) * Math.sin(angulo_xy), Math.cos(angulo_z)).multiplyScalar(escalar);
 
 function animate() {
 
-
+    circulo.position.add(direcao);
 	renderer.render( scene, camera );
-
 }
