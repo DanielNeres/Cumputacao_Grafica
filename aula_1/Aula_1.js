@@ -71,10 +71,6 @@ controls.update();
 
 camera.position.z = 5;
 
-//let velx = 0.05;
-//let vely = 0.043;
-//let velz = 0.025;
-
 function animate() {
 	renderer.render( scene, camera );
 	for (var cube of cubes){
