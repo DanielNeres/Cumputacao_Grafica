@@ -16,7 +16,16 @@
 		</script>
 	</head>
 	<body>
-		<script type="module" src="aula_2/Aula_2.js"></script>
-		<script type="module" src="aula_1/Aula_1.js"></script>
+		<script type="module">
+			function getModuleFromUrl() {
+			  const params = new URLSearchParams(window.location.search);
+			  return params.get('module') || 'aula_2';
+			}
+	  
+			const moduleName = getModuleFromUrl();
+			const modulePath = `./aulas/${moduleName}.js`;
+	  
+			import(modulePath).catch((err) => console.error('Erro ao carregar o módulo:', err));
+		  </script>
 	</body>
 </html>

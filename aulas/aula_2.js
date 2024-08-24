@@ -44,16 +44,16 @@ let thetas = [];
 	thetas.push(theta);
 }*/
 
-const m = 15;
+const m = 10;
 const deltax = 0.3
 const aresta = 1
 const pulo = (m - 1) *(deltax + aresta)/2;
 
-const n = 15;
+const n = 10;
 const deltay = 0.3
 const pulo_y = (n - 1) *(deltay + aresta)/2;
 
-const ziga = 15;
+const ziga = 10;
 const deltaz = 0.3
 const pulo_z = (n - 1) *(deltaz + aresta)/2;
 
