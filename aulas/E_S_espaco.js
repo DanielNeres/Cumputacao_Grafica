@@ -18,6 +18,35 @@ const circulo = new THREE.Mesh( geometry_circulo, material_circulo );
 scene.add( circulo );
 
 
+let pontos_x = [];
+pontos_x.push(new THREE.Vector3(-100, 0, 0));
+pontos_x.push(new THREE.Vector3(100, 0, 0));
+
+const geometry_linha_x = new THREE.BufferGeometry().setFromPoints(pontos_x);
+const material_linha_x = new THREE.LineBasicMaterial({ color: 0xff0000 });
+const linha_x = new THREE.Line( geometry_linha_x, material_linha_x );
+scene.add( linha_x );
+
+let pontos_y = [];
+pontos_y.push(new THREE.Vector3(0, -100, 0));
+pontos_y.push(new THREE.Vector3(0, 100, 0));
+
+const geometry_linha_y = new THREE.BufferGeometry().setFromPoints(pontos_y);
+const material_linha_y = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+const linha_y = new THREE.Line( geometry_linha_y, material_linha_y );
+scene.add( linha_y );
+
+let pontos_z = [];
+pontos_z.push(new THREE.Vector3(0, 0, -100));
+pontos_z.push(new THREE.Vector3(0, 0, 100));
+
+const geometry_linha_z = new THREE.BufferGeometry().setFromPoints(pontos_z);
+const material_linha_z = new THREE.LineBasicMaterial({ color: 0x0000ff });
+const linha_z = new THREE.Line( geometry_linha_z, material_linha_z );
+scene.add( linha_z );
+
+
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 0, 0);
 controls.update();
@@ -26,8 +55,8 @@ controls.update();
 camera.position.z = 40;
 
 let escalar = 0.1;
-let angulo_z = 40;
-let angulo_xy = 90;
+let angulo_z = 60;
+let angulo_xy = 60;
 
 angulo_z *= Math.PI / 180;
 angulo_xy *= Math.PI / 180;
