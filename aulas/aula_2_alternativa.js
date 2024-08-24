@@ -30,6 +30,20 @@ for (let i = 0; i < 10; i++){
 	cubes.push(cube);
 	thetas.push(theta);
 }
+/*
+for (let i = 0; i < 10; i++){
+
+	theta += 0.65;
+	const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+	const material = new THREE.MeshBasicMaterial( { color: 0x006B5C, wireframe: false } );
+	const cube = new THREE.Mesh( geometry, material );
+	//cube.position.y = r*Math.cos(-theta);
+	cube.position.x = r*Math.sin(-theta);
+	//cube.position.x = r*Math.sin(-theta);
+	cubes.push(cube);
+	thetas.push(theta);
+    scene.add( cube );
+}*/
 
 
 const geometry_circulo = new THREE.SphereGeometry( 5);
@@ -43,22 +57,21 @@ controls.target.set(0, 0, 0);
 controls.update();
 
 
-camera.position.z = 5;
-
+camera.position.z = 15;
+theta = 0;
 function animate() {
 
-	/*theta += 0.01;
+	theta += 0.01;
 	console.log("oi");
 	for (var i in cubes){
-		cube = cubes[i];
-		let theta0 = 0;
-		cube.position.y += r*Math.sin(-theta + theta0);
-		cube.position.x += r*Math.cos(-theta + theta0);
-		cube.position.z += r*Math.sin(-theta + theta0);
+		let cube_var = cubes[i];
+		cube_var.position.y = r*Math.sin(thetas[i] + theta);
+		cube_var.position.x = r*Math.cos(thetas[i] + theta);
+		cube_var.position.z = r*Math.sin(thetas[i] + theta);
 
-		cube.rotation.x += 0.01;
-		cube.rotation.y += 0.01;
-	}*/
+		cube_var.rotation.x += 0.01;
+		cube_var.rotation.y += 0.01;
+	}
 
 	renderer.render( scene, camera );
 
