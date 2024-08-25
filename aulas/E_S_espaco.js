@@ -62,30 +62,46 @@ controls.update();
 
 camera.position.z = 40;
 
-let esferas = [];
-let massas = [];
-let massa = 5;
-for (let i = 0; i < 2; i++) {
-    const geometry_circulo = new THREE.SphereGeometry(5 - 2 * i);
-    const material_circulo = new THREE.MeshBasicMaterial({ color: 0x006B5C, wireframe: true });
-    const circulo = new THREE.Mesh(geometry_circulo, material_circulo);
-    scene.add(circulo);
-    esferas.push(circulo);
-    massas.push(massa);
+
+class Circulo {
+    constructor(scene, raio, cor, massa) {
+        const geometry = new THREE.SphereGeometry(raio);
+        const material = new THREE.MeshBasicMaterial({ color: cor, wireframe: true });
+        this.mesh = new THREE.Mesh(geometry, material);
+        this.massa = massa;
+        scene.add(this.mesh);
+    }
+
+    setPositionAndDirection(x, y, z, angulo_z, angulo_xy, escalar) {
+        this.mesh.position.set(x, y, z);
+
+        let theta = angulo_z * Math.PI / 180;
+        let phi = angulo_xy * Math.PI / 180;
+
+        this.direcao = new THREE.Vector3(Math.sin(theta) * Math.cos(phi), Math.sin(theta) * Math.sin(phi), Math.cos(theta)).multiplyScalar(escalar);
+    }
+
+    mover() {
+        this.mesh.position.add(this.direcao);
+
+        for(const outro_corpo of circulos){
+            if (outro_corpo != this){
+                let direcao_outro_corpo = new THREE.Vector3(outro_corpo.position - this.position).normalize();
+            }
+        }
+    }
 }
 
-let escalar = 0.3;
-let angulo_z = 60;
-let angulo_xy = 140;
-
-angulo_z *= Math.PI / 180;
-angulo_xy *= Math.PI / 180;
-
-let direcao = new THREE.Vector3(Math.sin(angulo_z) * Math.cos(angulo_xy), Math.sin(angulo_z) * Math.sin(angulo_xy), Math.cos(angulo_z)).multiplyScalar(escalar);
+let circulos = [];
+for (let i = 0; i < 3; i++) {
+    let circulo = new Circulo(scene, 5 - 2 * i, 0x006B5C, 5);
+    circulo.setPositionAndDirection(0, 0, 0, 60, 140, 0.3);
+    circulos.push(circulo);
+}
 
 function animate() {
-    for (const circulo of esferas) {
-        circulo.position.add(direcao);
+    for (const circulo of circulos) {
+        circulo.mover();
     }
     renderer.render(scene, camera);
 }
