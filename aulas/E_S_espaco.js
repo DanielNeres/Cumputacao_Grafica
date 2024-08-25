@@ -83,26 +83,27 @@ class Circulo {
         this.velocidade.add(this.direcao); 
     }
 
-    aplicarGravidade(outro_corpo, G) {
+    aplicarGravidade(outro_corpo, G, tempo) {
         let distancia = outro_corpo.mesh.position.clone().sub(this.mesh.position);
         let r = distancia.length();
         if (r > 0.001) { 
             let forca_gravitacional = (G * outro_corpo.massa) / (r * r);
             let direcao = distancia.normalize();
-            let aceleracao = direcao.multiplyScalar(forca_gravitacional);
+            let aceleracao = direcao.multiplyScalar(forca_gravitacional * tempo);
             this.velocidade.add(aceleracao); 
         }
     }
 
-    mover() {
-        this.mesh.position.add(this.velocidade); 
+    mover(tempo) {
+        this.mesh.position.add(this.velocidade.clone().multiplyScalar(tempo)); 
     }
 }
 
 let circulos = [];
 let G = 0.0000000000667;
+let variavel_tempo = 100000;
 
-let sol = new Circulo(scene, 8, 0xffcc00, 100000000); 
+let sol = new Circulo(scene, 8, 0xffcc00, 10000); 
 sol.setPositionAndDirection(0, 0, 0, 0, 0, 0); 
 circulos.push(sol);
 
@@ -118,13 +119,13 @@ function animate() {
     for (let i = 0; i < circulos.length; i++) {
         for (let j = 0; j < circulos.length; j++) {
             if (i !== j) {
-                circulos[i].aplicarGravidade(circulos[j], G);
+                circulos[i].aplicarGravidade(circulos[j], G, variavel_tempo);
             }
         }
     }
 
     for (const circulo of circulos) {
-        circulo.mover();
+        circulo.mover(variavel_tempo);
     }
 
     renderer.render(scene, camera);
