@@ -65,11 +65,19 @@ controls.update();
 
 camera.position.z = 40;
 
+let cubes = [];
+let massas = [];
+let massa = 5;
+for(let i = 0; i < 2; i++){
 
-const geometry_circulo = new THREE.SphereGeometry( 5);
-const material_circulo = new THREE.MeshBasicMaterial( { color: 0x006B5C, wireframe: true } );
-const circulo = new THREE.Mesh( geometry_circulo, material_circulo );
-scene.add( circulo );
+    const geometry_circulo = new THREE.SphereGeometry( 5);
+    const material_circulo = new THREE.MeshBasicMaterial( { color: 0x006B5C, wireframe: true } );
+    const circulo = new THREE.Mesh( geometry_circulo, material_circulo );
+    scene.add( circulo );
+    cubes.push(circulo);
+    massas.push(massa);
+}
+
 
 
 let escalar = 0.3;
