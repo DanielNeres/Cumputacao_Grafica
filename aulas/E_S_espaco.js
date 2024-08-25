@@ -69,6 +69,7 @@ class Circulo {
         const material = new THREE.MeshBasicMaterial({ color: cor, wireframe: true });
         this.mesh = new THREE.Mesh(geometry, material);
         this.massa = massa;
+        this.velocidade = new THREE.Vector3(0, 0, 0); 
         scene.add(this.mesh);
     }
 
@@ -79,29 +80,52 @@ class Circulo {
         let phi = angulo_xy * Math.PI / 180;
 
         this.direcao = new THREE.Vector3(Math.sin(theta) * Math.cos(phi), Math.sin(theta) * Math.sin(phi), Math.cos(theta)).multiplyScalar(escalar);
+        this.velocidade.add(this.direcao); 
+    }
+
+    aplicarGravidade(outro_corpo, G) {
+        let distancia = outro_corpo.mesh.position.clone().sub(this.mesh.position);
+        let r = distancia.length();
+        if (r > 0.001) { 
+            let forca_gravitacional = (G * outro_corpo.massa) / (r * r);
+            let direcao = distancia.normalize();
+            let aceleracao = direcao.multiplyScalar(forca_gravitacional);
+            this.velocidade.add(aceleracao); 
+        }
     }
 
     mover() {
-        this.mesh.position.add(this.direcao);
-
-        for(const outro_corpo of circulos){
-            if (outro_corpo != this){
-                let direcao_outro_corpo = new THREE.Vector3(outro_corpo.position - this.position).normalize();
-            }
-        }
+        this.mesh.position.add(this.velocidade); 
     }
 }
 
 let circulos = [];
-for (let i = 0; i < 3; i++) {
-    let circulo = new Circulo(scene, 5 - 2 * i, 0x006B5C, 5);
-    circulo.setPositionAndDirection(0, 0, 0, 60, 140, 0.3);
+let G = 0.0000000000667;
+
+let sol = new Circulo(scene, 8, 0xffcc00, 100000000); 
+sol.setPositionAndDirection(0, 0, 0, 0, 0, 0); 
+circulos.push(sol);
+
+for (let i = 0; i < 4; i++) {
+    let distancia = 20 + (i * 20);
+    let circulo = new Circulo(scene, 3 - i, 0x006B5C, 5 - i); 
+    circulo.setPositionAndDirection(distancia, 0, 0, -60 + (i * 10), 70 - (i * 10), Math.sqrt(G * sol.massa / distancia)); 
+
     circulos.push(circulo);
 }
 
 function animate() {
+    for (let i = 0; i < circulos.length; i++) {
+        for (let j = 0; j < circulos.length; j++) {
+            if (i !== j) {
+                circulos[i].aplicarGravidade(circulos[j], G);
+            }
+        }
+    }
+
     for (const circulo of circulos) {
         circulo.mover();
     }
+
     renderer.render(scene, camera);
 }
